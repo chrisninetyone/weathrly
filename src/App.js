@@ -19,7 +19,16 @@ class App extends Component {
 		this.setState({ daily: true, hourly: false });
 	};
 
-  //return searched items
+	componentDidMount() {
+		fetch(
+			'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/a2af77b1b6c07d8e01527d13dc233502/37.8267,-122.4233'
+		)
+			.then(response => response.json())
+			.then(response => {
+				console.log(response);
+			});
+	}
+	//return searched items
 	render() {
 		return (
 			<div className="App">

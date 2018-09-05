@@ -3,7 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import { data } from './data';
 import CurrentWeather from './CurrentWeather';
-import SevenHourForecast from './7HourForecast'
+import SevenHourForecast from './7HourForecast';
+import TenDayForecast from './10DayForecast';
+import Welcome from './Welcome';
 
 // function HighAndLow() {
 // 	return (
@@ -29,8 +31,10 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<CurrentWeather/>
-        <SevenHourForecast/>
+        <Welcome/>
+				<CurrentWeather />
+				<SevenHourForecast />
+        <TenDayForecast/>
 			</div>
 		);
 	}

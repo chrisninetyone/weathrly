@@ -1,16 +1,19 @@
 import React from 'react';
 import { data } from './data';
+import Card from './Card';
 
 const SevenHourForecast = () => {
 	return (
 		<div>
 			{data.hourly_forecast.map(value => {
+                console.log(value)
 				return (
-					<div>
-						<div>{value.FCTTIME.hour}</div>
-						<div>{value.icon_url}</div>
-						<div>{value.temp.english}</div>
-					</div>
+					<Card
+						time={value.FCTTIME.hour}
+						icon={value.icon_url}
+						temp={value.temp.english}
+						key={value.FCTTIME.epoch}
+					/>
 				);
 			})}
 		</div>

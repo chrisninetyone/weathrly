@@ -6,7 +6,6 @@ const SevenHourForecast = () => {
 	return (
 		<div>
 			{data.hourly_forecast.map(value => {
-                console.log(value)
 				return (
 					<Card
 						time={value.FCTTIME.hour}

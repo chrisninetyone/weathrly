@@ -1,40 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { data } from './data';
 import CurrentWeather from './CurrentWeather';
 import SevenHourForecast from './7HourForecast';
 import TenDayForecast from './10DayForecast';
 import Welcome from './Welcome';
 
-// function HighAndLow() {
-// 	return (
-// 		<div>
-// 			<p>{data.forecast.dsimpleforecast.forecastday.date.high}</p>
-// 			<p>{data.forecast.dsimpleforecast.forecastday.date.low}</p>
-// 		</div>
-// 	);
-// }
-// const DailySummary = () => {
-// 	return (
-// 		<div>
-// 			<div>
-// 				{data.forecast.txt_forecast.forecastday.map(value => {
-// 					return <div>{value.fcttext}</div>;
-// 				})}
-// 			</div>
-// 		</div>
-// 	);
-// }
-
 class App extends Component {
+	state = {
+		forecast: false,
+		hourly: false
+	};
+
+	handleHourly = () => {
+		this.setState({ hourly: true, daily: false });
+	};
+
+	handleDaily = () => {
+		this.setState({ daily: true, hourly: false });
+	};
+
+  //return searched items
 	render() {
 		return (
 			<div className="App">
-        <Welcome/>
+				<Welcome />
+				<button onClick={this.handleHourly}>Hourly Forecast</button>
+				<button onClick={this.handleDaily}>10 Day Forecast</button>
 				<CurrentWeather />
-				<SevenHourForecast />
-        <TenDayForecast/>
+				{this.state.hourly && <SevenHourForecast />}
+				{this.state.daily && <TenDayForecast />}
 			</div>
 		);
 	}

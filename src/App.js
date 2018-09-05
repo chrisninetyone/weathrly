@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import CurrentWeather from './CurrentWeather';
+import SevenHourForecast from './7HourForecast';
+import TenDayForecast from './10DayForecast';
+import Welcome from './Welcome';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+	state = {
+		forecast: false,
+		hourly: false
+	};
+
+	handleHourly = () => {
+		this.setState({ hourly: true, daily: false });
+	};
+
+	handleDaily = () => {
+		this.setState({ daily: true, hourly: false });
+	};
+
+  //return searched items
+	render() {
+		return (
+			<div className="App">
+				<Welcome />
+				<button onClick={this.handleHourly}>Hourly Forecast</button>
+				<button onClick={this.handleDaily}>10 Day Forecast</button>
+				<CurrentWeather />
+				{this.state.hourly && <SevenHourForecast />}
+				{this.state.daily && <TenDayForecast />}
+			</div>
+		);
+	}
 }
 
 export default App;

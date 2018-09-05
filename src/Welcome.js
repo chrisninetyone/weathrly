@@ -2,11 +2,11 @@ import React from 'react';
 import Search from './Search';
 
 
-const Welcome = () => {
+const Welcome = (props) => {
     return (
         <div>
             <div>Welcome to Weathrly!</div>
-            <Search/>
+            <Search handleSubmit={props.handleSubmit}/>
         </div>
     )
 }

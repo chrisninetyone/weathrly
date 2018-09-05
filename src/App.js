@@ -8,7 +8,9 @@ import Welcome from './Welcome';
 class App extends Component {
 	state = {
 		forecast: false,
-		hourly: false
+		hourly: false,
+		input: '',
+		name: ''
 	};
 
 	handleHourly = () => {
@@ -19,23 +21,39 @@ class App extends Component {
 		this.setState({ daily: true, hourly: false });
 	};
 
-	componentDidMount() {
-		fetch(
-			'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/a2af77b1b6c07d8e01527d13dc233502/37.8267,-122.4233'
-		)
+	handleChange = event => {
+		this.setState({ input: event.target.value });
+	};
+
+	handleSubmit = () => {
+		const APIKey = '2eacf5cd8e08d4adc524186577921400';
+		const URL = `https://api.openweathermap.org/data/2.5/weather?q=${
+			this.state.input
+		}&APPID=${APIKey}&units=imperial`;
+		fetch(URL)
 			.then(response => response.json())
 			.then(response => {
-				console.log(response);
+				this.setState({ name: response.name, daily: false, hourly: false });
 			});
-	}
-	//return searched items
+	};
+
+	//keep console logging response
+
 	render() {
 		return (
 			<div className="App">
-				<Welcome />
+				<input
+					type="text"
+					placeholder="Enter a Location"
+					onChange={this.handleChange}
+				/>
+				<button type="submit" value="Submit" onClick={this.handleSubmit}>
+					Submit
+				</button>
 				<button onClick={this.handleHourly}>Hourly Forecast</button>
 				<button onClick={this.handleDaily}>10 Day Forecast</button>
-				<CurrentWeather />
+				{/* <CurrentWeather /> */}
+				{this.state.name}
 				{this.state.hourly && <SevenHourForecast />}
 				{this.state.daily && <TenDayForecast />}
 			</div>

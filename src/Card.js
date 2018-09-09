@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const Card = props => {
 	return (
@@ -10,4 +11,7 @@ const Card = props => {
 	);
 };
 
+const StyledCard = styled(Card)`
+	color: pink;
+`;
 export default Card;

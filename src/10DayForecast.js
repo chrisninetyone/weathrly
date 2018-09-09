@@ -2,7 +2,8 @@ import React from 'react';
 import { data } from './data';
 import Card from './Card';
 
-const TenDayForecast = () => {
+const TenDayForecast = (props) => {
+	console.log(props.time)
 	return (
 		<div>
 			{data.forecast.txt_forecast.forecastday.map(value => {

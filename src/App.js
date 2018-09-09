@@ -4,21 +4,17 @@ import CurrentWeather from './CurrentWeather';
 import SevenHourForecast from './7HourForecast';
 import TenDayForecast from './10DayForecast';
 import Welcome from './Welcome';
+import styled from 'styled-components';
 
 class App extends Component {
 	state = {
 		forecast: false,
 		hourly: false,
 		input: '',
-		name: ''
-	};
-
-	handleHourly = () => {
-		this.setState({ hourly: true, daily: false });
-	};
-
-	handleDaily = () => {
-		this.setState({ daily: true, hourly: false });
+		name: '',
+		currentTemp: '',
+		hourlyTemp: [],
+		dailyTemp: []
 	};
 
 	handleChange = event => {
@@ -33,13 +29,62 @@ class App extends Component {
 		fetch(URL)
 			.then(response => response.json())
 			.then(response => {
-				this.setState({ name: response.name, daily: false, hourly: false });
+				console.log(response);
+				this.setState({
+					name: response.name,
+					daily: false,
+					hourly: false,
+					currentTemp: response.main.temp
+				});
 			});
 	};
 
-	//keep console logging response
+	handleHourly = () => {
+		const APIKey = '2eacf5cd8e08d4adc524186577921400';
+		const URL = `https://api.openweathermap.org/data/2.5/forecast?q=${
+			this.state.input
+		}&APPID=${APIKey}&units=imperial`;
+		fetch(URL)
+			.then(response => response.json())
+			.then(response => {
+				this.setState({
+					name: response.name,
+					hourlyTemp: this.state.hourlyTemp.concat(response.list)
+				});
+			});
+	};
+
+	handleDaily = () => {
+		const APIKey = '2eacf5cd8e08d4adc524186577921400';
+		const URL = `https://api.openweathermap.org/data/2.5/forecast/daily?q${
+			this.state.input
+		}&APPID=${APIKey}&units=imperial`;
+		fetch(URL)
+			.then(response => response.json())
+			.then(response => {
+				console.log(response)
+				this.setState({
+					name: response.name,
+					dailyTemp: this.state.dailyTemp.concat(response.list)
+				});
+			});
+	};
 
 	render() {
+		const SubmitButton = styled.button`
+			color: pink;
+			background-color: teal;
+		`;
+
+		const HourlyForecastButton = styled.button`
+			color: pink;
+			background-color: teal;
+		`;
+		const DailyForecastButton = styled.button`
+			color: pink;
+			background-color: teal;
+		`;
+
 		return (
 			<div className="App">
 				<input
@@ -47,15 +92,41 @@ class App extends Component {
 					placeholder="Enter a Location"
 					onChange={this.handleChange}
 				/>
-				<button type="submit" value="Submit" onClick={this.handleSubmit}>
+				<SubmitButton type="submit" value="Submit" onClick={this.handleSubmit}>
 					Submit
-				</button>
-				<button onClick={this.handleHourly}>Hourly Forecast</button>
-				<button onClick={this.handleDaily}>10 Day Forecast</button>
+				</SubmitButton>
+				<HourlyForecastButton onClick={this.handleHourly}>
+					Hourly Forecast
+				</HourlyForecastButton>
+				<DailyForecastButton onClick={this.handleDaily}>
+					10 Day Forecast
+				</DailyForecastButton>
 				{/* <CurrentWeather /> */}
-				{this.state.name}
-				{this.state.hourly && <SevenHourForecast />}
-				{this.state.daily && <TenDayForecast />}
+				<div>Name: {this.state.name}</div>
+				<div>Current Temperature: {this.state.currentTemp}</div>
+				{this.state.hourlyTemp &&
+					this.state.hourlyTemp.map(hourlyWeather => {
+						return (
+							<SevenHourForecast
+								time={hourlyWeather.dt_txt}
+								temp={hourlyWeather.main.temp}
+								low={hourlyWeather.main.temp_min}
+								high={hourlyWeather.main.temp_max}
+							/>
+						);
+					})}
+
+				{this.state.dailyTemp &&
+					this.state.dailyTemp.map(dailyWeather => {
+						return (
+							<TenDayForecast
+								// time={dailyWeather.list}
+								// temp={dailyWeather.list.temp}
+								// low={dailyWeather.list.temp.min}
+								// high={dailyWeather.list.temp.max}
+							/>
+						);
+					})}
 			</div>
 		);
 	}
